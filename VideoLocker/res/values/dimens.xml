@@ -9,7 +9,7 @@
     <dimen name="action_bar_icon_size">24dp</dimen>
 
     <!-- Navigation Drawer -->
-    <dimen name="height_drawer_menu">44dp</dimen>
+    <dimen name="height_drawer_menu">42dp</dimen>
     <dimen name="drawer_profile_image_diameter">85dp</dimen>
     <dimen name="drawer_profile_image_border_width">1dp</dimen>
     <dimen name="drawer_username_text">20sp</dimen>
