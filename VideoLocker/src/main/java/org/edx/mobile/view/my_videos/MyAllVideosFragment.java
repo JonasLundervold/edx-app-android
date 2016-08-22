@@ -1,18 +1,18 @@
 package org.edx.mobile.view.my_videos;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.google.inject.Inject;
 
 import org.edx.mobile.R;
 import org.edx.mobile.base.BaseFragment;
 import org.edx.mobile.core.IEdxEnvironment;
+import org.edx.mobile.databinding.FragmentMyAllVideosBinding;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
 import org.edx.mobile.module.analytics.ISegment;
@@ -30,9 +30,11 @@ import de.greenrobot.event.EventBus;
 
 public class MyAllVideosFragment extends BaseFragment {
 
-    private MyAllVideoCourseAdapter myCoursesAdaptor;
     protected final Logger logger = new Logger(getClass().getName());
+
+    private MyAllVideoCourseAdapter myCoursesAdaptor;
     private GetAllDownloadedVideosTask getAllDownloadedVideosTask;
+    private FragmentMyAllVideosBinding fragmentMyAllVideosBinding;
 
     @Inject
     protected IEdxEnvironment environment;
@@ -45,12 +47,9 @@ public class MyAllVideosFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_all_videos, container, false);
-
-        ListView myCourseList = (ListView) view.findViewById(R.id.videos_course_list);
-        myCourseList.setEmptyView(view.findViewById(R.id.empty_list_view));
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentMyAllVideosBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_all_videos, container, false);
+        fragmentMyAllVideosBinding.videosCourseList.setEmptyView(fragmentMyAllVideosBinding.emptyListView);
 
         myCoursesAdaptor = new MyAllVideoCourseAdapter(getActivity(), environment) {
             @Override
@@ -62,10 +61,10 @@ public class MyAllVideosFragment extends BaseFragment {
             }
         };
 
-        myCourseList.setAdapter(myCoursesAdaptor);
-        myCourseList.setOnItemClickListener(myCoursesAdaptor);
+        fragmentMyAllVideosBinding.videosCourseList.setAdapter(myCoursesAdaptor);
+        fragmentMyAllVideosBinding.videosCourseList.setOnItemClickListener(myCoursesAdaptor);
 
-        return view;
+        return fragmentMyAllVideosBinding.getRoot();
     }
 
     @Override
@@ -116,6 +115,7 @@ public class MyAllVideosFragment extends BaseFragment {
     public void onEventMainThread(DownloadedVideoDeletedEvent e) {
         addMyAllVideosData();
     }
+
     public void onEventMainThread(DownloadCompletedEvent e) {
         addMyAllVideosData();
     }

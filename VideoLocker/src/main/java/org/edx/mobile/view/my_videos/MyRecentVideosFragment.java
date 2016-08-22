@@ -374,7 +374,7 @@ public class MyRecentVideosFragment extends BaseFragment implements IPlayerEvent
         // the fragment needs to be added immediately in order to be playable
         childManager.executePendingTransactions();
         ((NetworkSubject) getActivity()).registerNetworkObserver(playerFragment);
-        playerFragment.unlockOrientation();
+//        playerFragment.unlockOrientation();
     }
 
 

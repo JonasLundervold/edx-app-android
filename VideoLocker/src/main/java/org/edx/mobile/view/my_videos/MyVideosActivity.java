@@ -20,24 +20,13 @@ public class MyVideosActivity extends BaseVideosDownloadStateActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myvideos_tab);
-
-        // configure slider layout. This should be called only once and
-        // hence is shifted to onCreate() function
         configureDrawer();
 
         offlineBar = findViewById(R.id.offline_bar);
 
         environment.getSegment().trackScreenView(ISegment.Screens.MY_VIDEOS);
 
-        // now init the tabs
         initializeTabs();
-
-        // Full-screen video in landscape.
-        if (isLandscape()) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            setActionBarVisible(false);
-        }
     }
 
     private void initializeTabs() {
@@ -51,7 +40,7 @@ public class MyVideosActivity extends BaseVideosDownloadStateActivity {
         pager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         if (tabLayout != null) {
-            tabLayout.setTabsFromPagerAdapter(adapter);
+            tabLayout.setupWithViewPager(pager);
             tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager));
             pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         }

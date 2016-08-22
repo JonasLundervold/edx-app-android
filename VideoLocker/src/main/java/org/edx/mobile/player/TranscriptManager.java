@@ -246,6 +246,11 @@ public class TranscriptManager {
     public LinkedHashMap<String, InputStream> fetchTranscriptsForVideo(
                 TranscriptModel transcript, Context context){
 
+        //  TODO Sometimes a null context is passed?
+        if (context == null) {
+            return null;
+        }
+
         LinkedHashMap<String, InputStream> transcriptList = new LinkedHashMap<String, InputStream>();
         try{
             if(transcript.chineseUrl!=null){
