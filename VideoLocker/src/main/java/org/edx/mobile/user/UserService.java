@@ -17,7 +17,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import static org.edx.mobile.http.ApiConstants.QUERY_PAGE_SIZE;
+import static org.edx.mobile.http.ApiConstants.PARAM_PAGE_SIZE;
 
 public interface UserService {
     @GET("/api/user/v1/accounts/{username}")
@@ -35,7 +35,7 @@ public interface UserService {
     @GET("/api/mobile/v0.5/users/{username}/course_enrollments")
     Call<ResponseBody> getUserEnrolledCourses(@Path("username") String username);
 
-    @GET("/api/badges/v1/assertions/user/{username}?" + QUERY_PAGE_SIZE)
+    @GET("/api/badges/v1/assertions/user/{username}?" + PARAM_PAGE_SIZE)
     Call<Page<BadgeAssertion>> getBadges(@Path("username") String username,
                                          @Query("page") int page);
 }

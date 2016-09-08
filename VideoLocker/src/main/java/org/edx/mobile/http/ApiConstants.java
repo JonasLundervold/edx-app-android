@@ -34,7 +34,7 @@ public class ApiConstants {
 
     public static final int STANDARD_PAGE_SIZE = 20;
 
-    public static final String QUERY_PAGE_SIZE = "page_size=" + STANDARD_PAGE_SIZE;
+    public static final String PARAM_PAGE_SIZE = "page_size=" + STANDARD_PAGE_SIZE;
 
     @NonNull
     public static String getOAuthGroupIdForAuthBackend(@NonNull LoginPrefs.AuthBackend authBackend) {

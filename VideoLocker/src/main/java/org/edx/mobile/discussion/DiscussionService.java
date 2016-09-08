@@ -31,7 +31,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import static org.edx.mobile.http.ApiConstants.QUERY_PAGE_SIZE;
+import static org.edx.mobile.http.ApiConstants.PARAM_PAGE_SIZE;
 
 public interface DiscussionService {
     @Headers("Cache-Control: no-cache")
@@ -52,7 +52,7 @@ public interface DiscussionService {
                                                @Query("topic_id") List<String> topicIds);
 
 
-    @GET("/api/discussion/v1/threads?" + QUERY_PAGE_SIZE)
+    @GET("/api/discussion/v1/threads?" + PARAM_PAGE_SIZE)
     Call<Page<DiscussionThread>> getThreadList(@Query("course_id") String courseId,
                                                @Query("topic_id") List<String> topicIds,
                                                @Query("view") String view,
@@ -61,7 +61,7 @@ public interface DiscussionService {
                                                @Query("requested_fields") List<String> requestedFields);
 
 
-    @GET("/api/discussion/v1/threads?following=true&" + QUERY_PAGE_SIZE)
+    @GET("/api/discussion/v1/threads?following=true&" + PARAM_PAGE_SIZE)
     Call<Page<DiscussionThread>> getFollowingThreadList(@Query("course_id") String courseId,
                                                         @Query("view") String view,
                                                         @Query("order_by") String orderBy,
@@ -69,7 +69,7 @@ public interface DiscussionService {
                                                         @Query("requested_fields")
                                                         List<String> requestedFields);
 
-    @GET("/api/discussion/v1/threads?" + QUERY_PAGE_SIZE)
+    @GET("/api/discussion/v1/threads?" + PARAM_PAGE_SIZE)
     Call<Page<DiscussionThread>> searchThreadList(@Query("course_id") String courseId,
                                                   @Query("text_search") String text,
                                                   @Query("page") int page,
@@ -80,13 +80,13 @@ public interface DiscussionService {
     Call<DiscussionThread> getThread(@Path("thread_id") String threadId);
 
 
-    @GET("/api/discussion/v1/comments?" + QUERY_PAGE_SIZE)
+    @GET("/api/discussion/v1/comments?" + PARAM_PAGE_SIZE)
     Call<Page<DiscussionComment>> getResponsesList(@Query("thread_id") String threadId,
                                                    @Query("page") int page,
                                                    @Query("requested_fields") List<String> requestedFields);
 
 
-    @GET("/api/discussion/v1/comments?" + QUERY_PAGE_SIZE)
+    @GET("/api/discussion/v1/comments?" + PARAM_PAGE_SIZE)
     Call<Page<DiscussionComment>> getResponsesListForQuestion(@Query("thread_id") String threadId,
                                                               @Query("page") int page,
                                                               @Query("endorsed") boolean endorsed,
@@ -94,7 +94,7 @@ public interface DiscussionService {
                                                               List<String> requestedFields);
 
 
-    @GET("/api/discussion/v1/comments/{comment_id}?" + QUERY_PAGE_SIZE)
+    @GET("/api/discussion/v1/comments/{comment_id}?" + PARAM_PAGE_SIZE)
     Call<Page<DiscussionComment>> getCommentsList(@Path("comment_id") String responseId,
                                                   @Query("page") int page,
                                                   @Query("requested_fields") List<String> requestedFields);
