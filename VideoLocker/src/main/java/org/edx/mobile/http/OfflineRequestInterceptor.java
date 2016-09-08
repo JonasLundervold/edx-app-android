@@ -36,7 +36,7 @@ public class OfflineRequestInterceptor implements Interceptor {
         if (isNetworkConnected()) {
             //TODO? should we specify caching here?
 //            int maxAge = 60; // read from cache for 1 minute
-//            builder.header(("Cache-Control", "public, max-age=" + maxAge);
+//            requestBuilder.header(("Cache-Control", "public, max-age=" + maxAge);
             requestBuilder.header("Cache-Control", "public");
         } else {
             requestBuilder.header("Cache-Control",
