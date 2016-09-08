@@ -25,6 +25,7 @@ import org.edx.mobile.discussion.DiscussionService.VoteBody;
 import org.edx.mobile.discussion.DiscussionTextUtils;
 import org.edx.mobile.discussion.DiscussionThread;
 import org.edx.mobile.discussion.DiscussionThreadUpdatedEvent;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.util.Config;
 import org.edx.mobile.util.ResourceUtil;
@@ -173,7 +174,7 @@ public class CourseDiscussionResponsesAdapter extends RecyclerView.Adapter imple
                         new FlagBody(!discussionThread.isAbuseFlagged()))
                         .enqueue(new ErrorHandlingCallback<DiscussionThread>(
                                 context,
-                                ErrorHandlingCallback.Type.USER_ACTION,
+                                CallTrigger.USER_ACTION,
                                 (TaskProgressCallback) null) {
                             @Override
                             protected void onResponse(@NonNull final DiscussionThread topicThread) {
@@ -198,7 +199,7 @@ public class CourseDiscussionResponsesAdapter extends RecyclerView.Adapter imple
                         new VoteBody(!discussionThread.isVoted()))
                         .enqueue(new ErrorHandlingCallback<DiscussionThread>(
                                 context,
-                                ErrorHandlingCallback.Type.USER_ACTION,
+                                CallTrigger.USER_ACTION,
                                 (TaskProgressCallback) null) {
                             @Override
                             protected void onResponse(@NonNull final DiscussionThread updatedDiscussionThread) {
@@ -218,7 +219,7 @@ public class CourseDiscussionResponsesAdapter extends RecyclerView.Adapter imple
                         new FollowBody(!discussionThread.isFollowing()))
                         .enqueue(new ErrorHandlingCallback<DiscussionThread>(
                                 context,
-                                ErrorHandlingCallback.Type.USER_ACTION,
+                                CallTrigger.USER_ACTION,
                                 (TaskProgressCallback) null) {
                             @Override
                             protected void onResponse(@NonNull final DiscussionThread updatedDiscussionThread) {
@@ -317,7 +318,7 @@ public class CourseDiscussionResponsesAdapter extends RecyclerView.Adapter imple
                         new FlagBody(!comment.isAbuseFlagged()))
                         .enqueue(new ErrorHandlingCallback<DiscussionComment>(
                                 context,
-                                ErrorHandlingCallback.Type.USER_ACTION,
+                                CallTrigger.USER_ACTION,
                                 (TaskProgressCallback) null) {
                             @Override
                             protected void onResponse(@NonNull final DiscussionComment comment) {
@@ -345,7 +346,7 @@ public class CourseDiscussionResponsesAdapter extends RecyclerView.Adapter imple
                         new VoteBody(!response.isVoted()))
                         .enqueue(new ErrorHandlingCallback<DiscussionComment>(
                                 context,
-                                ErrorHandlingCallback.Type.USER_ACTION,
+                                CallTrigger.USER_ACTION,
                                 (TaskProgressCallback) null) {
                             @Override
                             protected void onResponse(@NonNull final DiscussionComment comment) {

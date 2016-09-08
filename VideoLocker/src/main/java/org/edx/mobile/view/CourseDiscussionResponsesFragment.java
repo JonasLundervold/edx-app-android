@@ -23,6 +23,7 @@ import org.edx.mobile.discussion.DiscussionService.ReadBody;
 import org.edx.mobile.discussion.DiscussionThread;
 import org.edx.mobile.discussion.DiscussionThreadUpdatedEvent;
 import org.edx.mobile.discussion.DiscussionUtils;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.model.Page;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
@@ -105,7 +106,7 @@ public class CourseDiscussionResponsesFragment extends BaseFragment implements C
                 discussionThread.getIdentifier(), new ReadBody(true));
         // Setting a thread's "read" state gives us back the updated Thread object.
         getAndReadThreadCall.enqueue(new ErrorHandlingCallback<DiscussionThread>(getContext(),
-                ErrorHandlingCallback.Type.LOADING_UNCACHED, (TaskProgressCallback) null) {
+                CallTrigger.LOADING_UNCACHED, (TaskProgressCallback) null) {
             @Override
             protected void onResponse(@NonNull final DiscussionThread discussionThread) {
                 courseDiscussionResponsesAdapter.updateDiscussionThread(discussionThread);
@@ -227,7 +228,7 @@ public class CourseDiscussionResponsesFragment extends BaseFragment implements C
                         threadId, nextPage, requestedFields);
             }
             getResponsesListCall.enqueue(new ErrorHandlingCallback<Page<DiscussionComment>>(context,
-                    ErrorHandlingCallback.Type.LOADING_UNCACHED, (TaskProgressCallback) null) {
+                    CallTrigger.LOADING_UNCACHED, (TaskProgressCallback) null) {
                 @Override
                 protected void onResponse(
                         @NonNull final Page<DiscussionComment> threadResponsesPage) {

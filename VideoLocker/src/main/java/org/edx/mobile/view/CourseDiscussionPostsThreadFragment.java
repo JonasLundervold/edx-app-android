@@ -33,6 +33,7 @@ import org.edx.mobile.discussion.DiscussionThread;
 import org.edx.mobile.discussion.DiscussionThreadPostedEvent;
 import org.edx.mobile.discussion.DiscussionThreadUpdatedEvent;
 import org.edx.mobile.discussion.DiscussionTopic;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.model.Page;
 import org.edx.mobile.view.adapters.DiscussionPostsSpinnerAdapter;
@@ -221,7 +222,7 @@ public class CourseDiscussionPostsThreadFragment extends CourseDiscussionPostsBa
         discussionService.getSpecificCourseTopics(courseData.getCourse().getId(),
                 Collections.singletonList(topicId))
                 .enqueue(new ErrorHandlingCallback<CourseTopics>(getContext(),
-                        ErrorHandlingCallback.Type.LOADING_UNCACHED,
+                        CallTrigger.LOADING_UNCACHED,
                         new ProgressViewController(loadingIndicator)) {
                     @Override
                     protected void onResponse(@NonNull final CourseTopics courseTopics) {
@@ -338,7 +339,7 @@ public class CourseDiscussionPostsThreadFragment extends CourseDiscussionPostsBa
                     postsSort.getQueryParamValue(), nextPage, requestedFields);
         }
         getThreadListCall.enqueue(new ErrorHandlingCallback<Page<DiscussionThread>>(getActivity(),
-                ErrorHandlingCallback.Type.LOADING_UNCACHED,
+                CallTrigger.LOADING_UNCACHED,
                 // Initially we need to show the spinner at the center of the screen. After that,
                 // the ListView will start showing a footer-based loading indicator.
                 nextPage > 1 || callback.isRefreshingSilently() ? null :

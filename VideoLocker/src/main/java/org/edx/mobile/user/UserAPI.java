@@ -13,6 +13,7 @@ import com.google.inject.Singleton;
 
 import org.edx.mobile.event.AccountDataLoadedEvent;
 import org.edx.mobile.event.ProfilePhotoUpdatedEvent;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.http.HttpResponseStatusException;
 import org.edx.mobile.http.cache.CacheManager;
@@ -60,14 +61,14 @@ public class UserAPI {
 
         public AccountDataUpdatedCallback(@NonNull final Context context,
                                           @NonNull final String username,
-                                          @NonNull final ErrorHandlingCallback.Type type) {
+                                          @NonNull final CallTrigger type) {
             super(context, type);
             this.username = username;
         }
 
         public AccountDataUpdatedCallback(@NonNull final Context context,
                                           @NonNull final String username,
-                                          @NonNull final ErrorHandlingCallback.Type type,
+                                          @NonNull final CallTrigger type,
                                           @Nullable final TaskProgressCallback progressCallback) {
             super(context, type, progressCallback);
             this.username = username;
@@ -75,7 +76,7 @@ public class UserAPI {
 
         public AccountDataUpdatedCallback(@NonNull final Context context,
                                           @NonNull final String username,
-                                          @NonNull final ErrorHandlingCallback.Type type,
+                                          @NonNull final CallTrigger type,
                                           @Nullable final TaskMessageCallback messageCallback) {
             super(context, type, messageCallback);
             this.username = username;
@@ -83,7 +84,7 @@ public class UserAPI {
 
         public AccountDataUpdatedCallback(@NonNull final Context context,
                                           @NonNull final String username,
-                                          @NonNull final ErrorHandlingCallback.Type type,
+                                          @NonNull final CallTrigger type,
                                           @Nullable final TaskProgressCallback progressCallback,
                                           @Nullable final TaskMessageCallback messageCallback) {
             super(context, type, progressCallback, messageCallback);
@@ -117,7 +118,7 @@ public class UserAPI {
         public ProfileImageUpdatedCallback(@NonNull final Context context,
                                            @NonNull final String username,
                                            @Nullable final File profileImageFile,
-                                           @NonNull final ErrorHandlingCallback.Type type) {
+                                           @NonNull final CallTrigger type) {
             super(context, type);
             this.username = username;
             profileImageUri = profileImageFile == null ? null : Uri.fromFile(profileImageFile);
@@ -126,7 +127,7 @@ public class UserAPI {
         public ProfileImageUpdatedCallback(@NonNull final Context context,
                                            @NonNull final String username,
                                            @Nullable final File profileImageFile,
-                                           @NonNull final ErrorHandlingCallback.Type type,
+                                           @NonNull final CallTrigger type,
                                            @Nullable final TaskProgressCallback progressCallback) {
             super(context, type, progressCallback);
             this.username = username;
@@ -136,7 +137,7 @@ public class UserAPI {
         public ProfileImageUpdatedCallback(@NonNull final Context context,
                                            @NonNull final String username,
                                            @Nullable final File profileImageFile,
-                                           @NonNull final ErrorHandlingCallback.Type type,
+                                           @NonNull final CallTrigger type,
                                            @Nullable final TaskMessageCallback messageCallback) {
             super(context, type, messageCallback);
             this.username = username;
@@ -146,7 +147,7 @@ public class UserAPI {
         public ProfileImageUpdatedCallback(@NonNull final Context context,
                                            @NonNull final String username,
                                            @Nullable final File profileImageFile,
-                                           @NonNull final ErrorHandlingCallback.Type type,
+                                           @NonNull final CallTrigger type,
                                            @Nullable final TaskProgressCallback progressCallback,
                                            @Nullable final TaskMessageCallback messageCallback) {
             super(context, type, progressCallback, messageCallback);

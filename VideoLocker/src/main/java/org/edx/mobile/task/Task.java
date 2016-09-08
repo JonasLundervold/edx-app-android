@@ -9,6 +9,7 @@ import android.view.View;
 import com.google.inject.Inject;
 
 import org.edx.mobile.core.IEdxEnvironment;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.util.images.ErrorUtils;
 import org.edx.mobile.view.common.MessageType;
@@ -20,11 +21,20 @@ import java.lang.ref.WeakReference;
 
 import roboguice.util.RoboAsyncTask;
 
+/**
+ * This class is deprecated. Issues in it's
+ * implementation include the lack of a guarantee of the
+ * result not being delivered to the callback method
+ * after cancellation.
+ *
+ * New asynchronous HTTP request implementations should
+ * consider using Retrofit's asynchronous API. If that's
+ * not sufficient, or if the implementation is not of an
+ * HTTP call, then AsyncTask or Loader implementations
+ * should be considered instead.
+ */
+@Deprecated
 public abstract class Task<T> extends RoboAsyncTask<T> {
-
-    public enum Type {
-        USER_INITIATED, LOADING_CACHED, LOADING_NON_CACHED
-    }
 
     protected final Handler handler = new Handler();
     protected final Logger logger = new Logger(getClass().getName());
@@ -40,19 +50,19 @@ public abstract class Task<T> extends RoboAsyncTask<T> {
     @Inject
     protected IEdxEnvironment environment;
 
-    private final Type taskType;
+    private final CallTrigger callTrigger;
 
     public Task(Context context) {
-        this(context, Type.LOADING_NON_CACHED);
+        this(context, CallTrigger.LOADING_UNCACHED);
     }
 
-    public Task(Context context, Type type) {
+    public Task(Context context, CallTrigger callTrigger) {
         super(context);
 
         if (context instanceof TaskProcessCallback) {
             setTaskProcessCallback((TaskProcessCallback) context);
         }
-        this.taskType = type;
+        this.callTrigger = callTrigger;
     }
 
     public void setProgressDialog(@Nullable View progressView) {
@@ -127,14 +137,14 @@ public abstract class Task<T> extends RoboAsyncTask<T> {
     }
 
     /**
-     * @return The {@link MessageType} based on the {@link #taskType}.
+     * @return The {@link MessageType} based on the {@link #callTrigger}.
      */
     private MessageType getMessageType() {
-        switch (taskType) {
-            case USER_INITIATED:
+        switch (callTrigger) {
+            case USER_ACTION:
                 return MessageType.DIALOG;
             case LOADING_CACHED:
-            case LOADING_NON_CACHED:
+            case LOADING_UNCACHED:
             default:
                 return MessageType.FLYIN_ERROR;
         }

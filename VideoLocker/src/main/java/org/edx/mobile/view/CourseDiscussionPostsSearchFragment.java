@@ -16,6 +16,7 @@ import org.edx.mobile.R;
 import org.edx.mobile.discussion.DiscussionRequestFields;
 import org.edx.mobile.discussion.DiscussionService;
 import org.edx.mobile.discussion.DiscussionThread;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.model.Page;
 import org.edx.mobile.util.ResourceUtil;
@@ -90,7 +91,7 @@ public class CourseDiscussionPostsSearchFragment extends CourseDiscussionPostsBa
         final TaskProgressCallback progressCallback = activity instanceof TaskProgressCallback ?
                 (TaskProgressCallback) activity : null;
         searchThreadListCall.enqueue(new ErrorHandlingCallback<Page<DiscussionThread>>(
-                activity, ErrorHandlingCallback.Type.LOADING_UNCACHED,
+                activity, CallTrigger.LOADING_UNCACHED,
                 // Initially we need to show the spinner at the center of the screen. After that,
                 // the ListView will start showing a footer-based loading indicator.
                 nextPage > 1 || callback.isRefreshingSilently() ? null : progressCallback) {

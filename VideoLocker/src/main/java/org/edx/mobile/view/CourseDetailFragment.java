@@ -34,6 +34,7 @@ import org.edx.mobile.R;
 import org.edx.mobile.core.IEdxEnvironment;
 import org.edx.mobile.course.CourseAPI;
 import org.edx.mobile.course.CourseDetail;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
@@ -217,7 +218,7 @@ public class CourseDetailFragment extends BaseFragment {
     private void populateAboutThisCourse() {
         getCourseDetailCall = courseApi.getCourseDetail(courseDetail.course_id);
         getCourseDetailCall.enqueue(new ErrorHandlingCallback<CourseDetail>(
-                getActivity(), ErrorHandlingCallback.Type.LOADING_UNCACHED) {
+                getActivity(), CallTrigger.LOADING_UNCACHED) {
             @Override
             protected void onResponse(@NonNull final CourseDetail courseDetail) {
                 if (courseDetail.overview != null && !courseDetail.overview.isEmpty()) {

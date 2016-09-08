@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.edx.mobile.util.images.ErrorUtils;
-import org.edx.mobile.view.common.MessageType;
 import org.edx.mobile.view.common.TaskMessageCallback;
 import org.edx.mobile.view.common.TaskProgressCallback;
 
@@ -29,62 +28,17 @@ import roboguice.RoboGuice;
  */
 public abstract class ErrorHandlingCallback<T> implements Callback<T> {
     /**
-     * The HTTP request type, for determining what kind of error
-     * message to deliver to the callback.
-     */
-    public enum Type {
-        /**
-         * A request initiated by a user action.
-         */
-        USER_ACTION(MessageType.DIALOG),
-        /**
-         * A request initiated to load some data, that's being cached
-         * by the application.
-         */
-        LOADING_CACHED(MessageType.FLYIN_ERROR),
-        /**
-         * A request initiated to load some data, that's not being
-         * cached by the application.
-         */
-        LOADING_UNCACHED(MessageType.FLYIN_ERROR);
-
-        /**
-         * The message type that's associated with the request type.
-         */
-        @NonNull
-        private final MessageType messageType;
-
-        /**
-         * Create a new instance of an HTTP request type.
-         *
-         * @param messageType The message type that's associated with
-         *                    the request type.
-         */
-        Type(@NonNull final MessageType messageType) {
-            this.messageType = messageType;
-        }
-
-        /**
-         * @return The message type that's associated with the request
-         *         type.
-         */
-        @NonNull
-        MessageType getMessageType() {
-            return messageType;
-        }
-    }
-
-    /**
      * A Context for resolving the error message strings.
      */
     @NonNull
     private final Context context;
 
     /**
-     * The request type for resolving the type of error messages to deliver.
+     * The trigger for initiating the call. This is used to determine the type of error message to
+     * deliver.
      */
     @NonNull
-    private final Type type;
+    private final CallTrigger callTrigger;
 
     /**
      * The callback to invoke on start and finish of the request.
@@ -108,11 +62,12 @@ public abstract class ErrorHandlingCallback<T> implements Callback<T> {
      *                instead, with the relevant callback parameters explicitly passed as null (this
      *                may require casting the null in case of ambiguity when using a constructor
      *                that only sets one callback explicitly).
-     * @param type The request type for resolving the type of error messages to deliver.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
      */
     public ErrorHandlingCallback(@NonNull final Context context,
-                                 @NonNull final Type type) {
-        this(context, type,
+                                 @NonNull final CallTrigger callTrigger) {
+        this(context, callTrigger,
                 context instanceof TaskProgressCallback ? (TaskProgressCallback) context : null,
                 context instanceof TaskMessageCallback ? (TaskMessageCallback) context : null);
     }
@@ -125,16 +80,17 @@ public abstract class ErrorHandlingCallback<T> implements Callback<T> {
      *                {@link TaskMessageCallback} interface, and will be registered as such if so.
      *                If this is not the desired outcome, then the other constructor should be used
      *                that takes this callback parameter, and it should be explicitly set as null.
-     * @param type The request type for resolving the type of error messages to deliver.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
      * @param progressCallback The callback to invoke on start and finish of the request. Note that
      *                         since no callback method in this class is invoked upon request
      *                         initiation, it assumes that it's being initiated immediately, and
      *                         thus invokes that start callback immediately as well.
      */
     public ErrorHandlingCallback(@NonNull final Context context,
-                                 @NonNull final Type type,
+                                 @NonNull final CallTrigger callTrigger,
                                  @Nullable final TaskProgressCallback progressCallback) {
-        this(context, type,
+        this(context, callTrigger,
                 progressCallback,
                 context instanceof TaskMessageCallback ? (TaskMessageCallback) context : null);
     }
@@ -147,13 +103,14 @@ public abstract class ErrorHandlingCallback<T> implements Callback<T> {
      *                {@link TaskProgressCallback} interface, and will be registered as such if so.
      *                If this is not the desired outcome, then the other constructor should be used
      *                that takes this callback parameter, and it should be explicitly set as null.
-     * @param type The request type for resolving the type of error messages to deliver.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
      * @param messageCallback The callback to invoke for delivering any error messages.
      */
     public ErrorHandlingCallback(@NonNull final Context context,
-                                 @NonNull final Type type,
+                                 @NonNull final CallTrigger callTrigger,
                                  @Nullable final TaskMessageCallback messageCallback) {
-        this(context, type,
+        this(context, callTrigger,
                 context instanceof TaskProgressCallback ? (TaskProgressCallback) context : null,
                 messageCallback);
     }
@@ -162,7 +119,8 @@ public abstract class ErrorHandlingCallback<T> implements Callback<T> {
      * Create a new instance of this class.
      *
      * @param context A Context for resolving the error message strings.
-     * @param type The request type for resolving the type of error messages to deliver.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
      * @param progressCallback The callback to invoke on start and finish of the request. Note that
      *                         since no callback method in this class is invoked upon request
      *                         initiation, it assumes that it's being initiated immediately, and
@@ -170,11 +128,11 @@ public abstract class ErrorHandlingCallback<T> implements Callback<T> {
      * @param messageCallback The callback to invoke for delivering any error messages.
      */
     public ErrorHandlingCallback(@NonNull final Context context,
-                                 @NonNull final Type type,
+                                 @NonNull final CallTrigger callTrigger,
                                  @Nullable final TaskProgressCallback progressCallback,
                                  @Nullable final TaskMessageCallback messageCallback) {
         this.context = context;
-        this.type = type;
+        this.callTrigger = callTrigger;
         this.progressCallback = progressCallback;
         this.messageCallback = messageCallback;
         // For the convenience of subclasses
@@ -238,7 +196,7 @@ public abstract class ErrorHandlingCallback<T> implements Callback<T> {
             progressCallback.finishProcess();
         }
         if (messageCallback != null) {
-            messageCallback.onMessage(type.getMessageType(),
+            messageCallback.onMessage(callTrigger.getMessageType(),
                     ErrorUtils.getErrorMessage(error, context));
         }
         onFailure(error);

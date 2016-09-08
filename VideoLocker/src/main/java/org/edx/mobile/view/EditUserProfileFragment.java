@@ -38,7 +38,7 @@ import org.edx.mobile.R;
 import org.edx.mobile.base.BaseFragment;
 import org.edx.mobile.event.AccountDataLoadedEvent;
 import org.edx.mobile.event.ProfilePhotoUpdatedEvent;
-import org.edx.mobile.http.ErrorHandlingCallback;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.module.analytics.ISegment;
 import org.edx.mobile.task.Task;
 import org.edx.mobile.user.Account;
@@ -115,7 +115,7 @@ public class EditUserProfileFragment extends BaseFragment {
         getAccountCall.enqueue(new AccountDataUpdatedCallback(
                 getActivity(),
                 username,
-                ErrorHandlingCallback.Type.LOADING_UNCACHED,
+                CallTrigger.LOADING_UNCACHED,
                 (TaskProgressCallback) null)); // Disable default loading indicator, we have our own
 
         getProfileFormDescriptionTask = new GetProfileFormDescriptionTask(getActivity()) {
@@ -440,7 +440,7 @@ public class EditUserProfileFragment extends BaseFragment {
         }
         userService.updateAccount(username, Collections.singletonMap(field.getName(), valueObject))
                 .enqueue(new AccountDataUpdatedCallback(getActivity(), username,
-                        ErrorHandlingCallback.Type.USER_ACTION) {
+                        CallTrigger.USER_ACTION) {
                     @Override
                     protected void onResponse(@NonNull final Account account) {
                         super.onResponse(account);

@@ -14,6 +14,7 @@ import org.edx.mobile.R;
 import org.edx.mobile.core.IEdxEnvironment;
 import org.edx.mobile.course.CourseAPI;
 import org.edx.mobile.course.CourseDetail;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.model.Page;
 import org.edx.mobile.view.adapters.FindCoursesListAdapter;
@@ -67,7 +68,7 @@ public class NativeFindCoursesFragment extends BaseFragment {
                 }
                 call = courseAPI.getCourseList(nextPage);
                 call.enqueue(new ErrorHandlingCallback<Page<CourseDetail>>(getActivity(),
-                        ErrorHandlingCallback.Type.LOADING_UNCACHED, (TaskProgressCallback) null) {
+                        CallTrigger.LOADING_UNCACHED, (TaskProgressCallback) null) {
                     @Override
                     protected void onResponse(@NonNull final Page<CourseDetail> coursesPage) {
                         callback.onPageLoaded(coursesPage);

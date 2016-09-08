@@ -23,6 +23,7 @@ import org.edx.mobile.discussion.DiscussionService;
 import org.edx.mobile.discussion.DiscussionService.FlagBody;
 import org.edx.mobile.discussion.DiscussionThread;
 import org.edx.mobile.discussion.DiscussionUtils;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.model.Page;
 import org.edx.mobile.module.analytics.ISegment;
@@ -131,8 +132,7 @@ public class CourseDiscussionCommentsFragment extends BaseFragment implements Di
         getCommentsListCall = discussionService.getCommentsList(
                 discussionResponse.getIdentifier(), nextPage, requestedFields);
         getCommentsListCall.enqueue(new ErrorHandlingCallback<Page<DiscussionComment>>(
-                getActivity(), ErrorHandlingCallback.Type.LOADING_UNCACHED,
-                (TaskProgressCallback) null) {
+                getActivity(), CallTrigger.LOADING_UNCACHED, (TaskProgressCallback) null) {
             @Override
             protected void onResponse(@NonNull final Page<DiscussionComment> threadCommentsPage) {
                 ++nextPage;
@@ -194,7 +194,7 @@ public class CourseDiscussionCommentsFragment extends BaseFragment implements Di
         setCommentFlaggedCall = discussionService.setCommentFlagged(
                 comment.getIdentifier(), new FlagBody(!comment.isAbuseFlagged()));
         setCommentFlaggedCall.enqueue(new ErrorHandlingCallback<DiscussionComment>(
-                context, ErrorHandlingCallback.Type.LOADING_UNCACHED, (TaskProgressCallback) null) {
+                context, CallTrigger.LOADING_UNCACHED, (TaskProgressCallback) null) {
             @Override
             protected void onResponse(@NonNull final DiscussionComment comment) {
                 discussionCommentsAdapter.updateComment(comment);

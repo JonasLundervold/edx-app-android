@@ -32,7 +32,7 @@ import org.edx.mobile.base.BaseFragmentActivity;
 import org.edx.mobile.core.IEdxEnvironment;
 import org.edx.mobile.event.AccountDataLoadedEvent;
 import org.edx.mobile.event.ProfilePhotoUpdatedEvent;
-import org.edx.mobile.http.ErrorHandlingCallback;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.ProfileModel;
 import org.edx.mobile.module.analytics.ISegment;
@@ -103,7 +103,7 @@ public class NavigationFragment extends BaseFragment {
             getAccountCall.enqueue(new UserAPI.AccountDataUpdatedCallback(
                     getActivity(),
                     profile.username,
-                    ErrorHandlingCallback.Type.LOADING_UNCACHED,
+                    CallTrigger.LOADING_UNCACHED,
                     (TaskProgressCallback) null)); // Disable global loading indicator
         }
         EventBus.getDefault().register(this);

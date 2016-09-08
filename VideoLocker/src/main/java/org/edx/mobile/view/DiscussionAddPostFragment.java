@@ -29,6 +29,7 @@ import org.edx.mobile.discussion.DiscussionThreadPostedEvent;
 import org.edx.mobile.discussion.DiscussionTopic;
 import org.edx.mobile.discussion.DiscussionTopicDepth;
 import org.edx.mobile.discussion.ThreadBody;
+import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
@@ -213,7 +214,7 @@ public class DiscussionAddPostFragment extends BaseFragment {
         createThreadCall = discussionService.createThread(threadBody);
         createThreadCall.enqueue(new ErrorHandlingCallback<DiscussionThread>(
                 getActivity(),
-                ErrorHandlingCallback.Type.USER_ACTION,
+                CallTrigger.USER_ACTION,
                 new ProgressViewController(addPostProgressBar)) {
             @Override
             protected void onResponse(@NonNull final DiscussionThread courseTopics) {
@@ -234,7 +235,7 @@ public class DiscussionAddPostFragment extends BaseFragment {
         }
         getTopicListCall = discussionService.getCourseTopics(courseData.getCourse().getId());
         getTopicListCall.enqueue(new ErrorHandlingCallback<CourseTopics>(getActivity(),
-                ErrorHandlingCallback.Type.LOADING_UNCACHED, (TaskMessageCallback) null) {
+                CallTrigger.LOADING_UNCACHED, (TaskMessageCallback) null) {
             @Override
             protected void onResponse(@NonNull final CourseTopics courseTopics) {
                 final ArrayList<DiscussionTopic> allTopics = new ArrayList<>();
