@@ -104,7 +104,7 @@ public class UserAPI {
         return userService.setProfileImage(
                 username,
                 "attachment;filename=filename." + MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType),
-                RequestBody.create(MediaType.parse("image/jpeg"), file));
+                RequestBody.create(MediaType.parse(mimeType), file));
     }
 
     public static class ProfileImageUpdatedCallback extends ErrorHandlingCallback<ResponseBody> {
