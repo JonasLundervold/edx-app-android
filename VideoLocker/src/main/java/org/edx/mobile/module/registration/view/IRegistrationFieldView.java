@@ -18,8 +18,15 @@ public interface IRegistrationFieldView {
     boolean hasValue();
     RegistrationFormField getField();
     View getView();
-    void handleError(String errorMessage);
-    boolean isValidInput();
+
+    /**
+     * Handles the error state
+     * @param errorMessage The error message to display or null if none should be displayed
+     * @param requestAccessibility True if accessibility should be focused as well
+     */
+    void handleError(String errorMessage, boolean requestAccessibility);
+
+    boolean isValidInput(boolean requestAccessibilityOnInvalid);
     void setEnabled(boolean enabled);
     void setActionListener(IActionListener actionListener);
 

@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:textColorHint="@color/grey_text"
         android:focusable="true"
-        android:paddingStart="-10dp"
-        android:paddingLeft="-10dp"
+        android:paddingStart="@dimen/registration_spinner_horizontal_padding"
+        android:paddingLeft="@dimen/registration_spinner_horizontal_padding"
         tools:targetApi="17"/>
 
     <TextView

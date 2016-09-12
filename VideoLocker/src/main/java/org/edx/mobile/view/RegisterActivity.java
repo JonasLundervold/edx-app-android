@@ -218,7 +218,7 @@ public class RegisterActivity extends BaseFragmentActivity
         // prepare query (POST body)
         Bundle parameters = new Bundle();
         for (IRegistrationFieldView v : mFieldViews) {
-            if (v.isValidInput()) {
+            if (v.isValidInput(!hasError)) {
                 if (v.hasValue()) {
                     // we submit the field only if it provides a value
                     parameters.putString(v.getField().getName(), v.getCurrentValue().getAsString());
@@ -283,7 +283,7 @@ public class RegisterActivity extends BaseFragmentActivity
                         for (IRegistrationFieldView fieldView : mFieldViews) {
                             if (key.equalsIgnoreCase(fieldView.getField().getName())) {
                                 List<RegisterResponseFieldError> error = messageBody.get(key);
-                                showErrorOnField(error, fieldView);
+                                showErrorOnField(error, fieldView, !fieldErrorShown);
                                 fieldErrorShown = true;
                                 break;
                             }
@@ -307,14 +307,14 @@ public class RegisterActivity extends BaseFragmentActivity
      * @param fieldView
      * @return
      */
-    private void showErrorOnField(List<RegisterResponseFieldError> errors, IRegistrationFieldView fieldView) {
+    private void showErrorOnField(List<RegisterResponseFieldError> errors, IRegistrationFieldView fieldView, boolean requestAccessibility) {
         if (errors != null && !errors.isEmpty()) {
             StringBuffer buffer = new StringBuffer();
             for (RegisterResponseFieldError e : errors) {
                 buffer.append(e.getUserMessage() + " ");
             }
 
-            fieldView.handleError(buffer.toString());
+            fieldView.handleError(buffer.toString(), requestAccessibility);
         }
     }
 

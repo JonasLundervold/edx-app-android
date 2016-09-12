@@ -19,11 +19,11 @@ class RegistrationEmailView extends RegistrationEditTextView {
     }
 
     @Override
-    public boolean isValidInput() {
-        boolean isValidInput = super.isValidInput();
+    public boolean isValidInput(boolean requestAccessibilityOnInvalid) {
+        boolean isValidInput = super.isValidInput(requestAccessibilityOnInvalid);
         if(isValidInput){
             if(!InputValidationUtil.isValidEmail(getCurrentValue().getAsString())){
-                handleError(getView().getResources().getString(R.string.error_invalid_email));
+                handleError(getView().getResources().getString(R.string.error_invalid_email), requestAccessibilityOnInvalid);
                 isValidInput = false;
             }
         }

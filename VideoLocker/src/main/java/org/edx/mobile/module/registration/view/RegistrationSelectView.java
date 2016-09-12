@@ -2,6 +2,7 @@ package org.edx.mobile.module.registration.view;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
@@ -78,10 +79,13 @@ class RegistrationSelectView implements IRegistrationFieldView {
     }
 
     @Override
-    public void handleError(String error) {
+    public void handleError(String error, boolean requestAccessibility) {
         if (error != null && !error.isEmpty()) {
             mErrorView.setVisibility(View.VISIBLE);
             mErrorView.setText(error);
+            if (requestAccessibility) {
+                mErrorView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+            }
         }
         else {
             logger.warn("error message not provided, so not informing the user about this error");
@@ -89,7 +93,7 @@ class RegistrationSelectView implements IRegistrationFieldView {
     }
 
     @Override
-    public boolean isValidInput() {
+    public boolean isValidInput(boolean requestAccessibilityOnInvalid) {
         // hide error as we are re-validating the input
         mErrorView.setVisibility(View.GONE);
 
@@ -100,7 +104,7 @@ class RegistrationSelectView implements IRegistrationFieldView {
                 errorMessage = getView().getResources().getString(R.string.error_select_field,
                         mField.getLabel());
             }
-            handleError(errorMessage);
+            handleError(errorMessage, requestAccessibilityOnInvalid);
             return false;
         }
 

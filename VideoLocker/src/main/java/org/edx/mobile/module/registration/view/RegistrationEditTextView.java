@@ -7,6 +7,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
@@ -30,8 +31,8 @@ class RegistrationEditTextView implements IRegistrationFieldView {
         this.mField = field;
         this.mView = view;
 
-        mTextInputLayout = (TextInputLayout) view.findViewById(R.id.til);
-        mTextInputEditText = (TextInputEditText) view.findViewById(R.id.tilEt);
+        mTextInputLayout = (TextInputLayout) view.findViewById(R.id.register_edit_text_til);
+        mTextInputEditText = (TextInputEditText) view.findViewById(R.id.register_edit_text_tilEt);
         mErrorTextView = (TextView) view.findViewById(R.id.input_error);
 
         // set max lines for this input to be 1
@@ -86,11 +87,14 @@ class RegistrationEditTextView implements IRegistrationFieldView {
     }
 
     @Override
-    public void handleError(String error) {
+    public void handleError(String error, boolean requestAccessibility) {
         if (!TextUtils.isEmpty(error)) {
             Spanned result = Html.fromHtml(error);
             mErrorTextView.setText(result);
             mErrorTextView.setVisibility(View.VISIBLE);
+            if (requestAccessibility) {
+                mErrorTextView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+            }
         }
         else {
             logger.warn("error message not provided, so not informing the user about this error");
@@ -98,7 +102,7 @@ class RegistrationEditTextView implements IRegistrationFieldView {
     }
 
     @Override
-    public boolean isValidInput() {
+    public boolean isValidInput(boolean requestAccessibilityOnInvalid) {
         // hide error as we are re-validating the input
         mErrorTextView.setVisibility(View.GONE);
 
@@ -109,7 +113,7 @@ class RegistrationEditTextView implements IRegistrationFieldView {
                 errorMessage = getView().getResources().getString(R.string.error_enter_field,
                         mField.getLabel());
             }
-            handleError(errorMessage);
+            handleError(errorMessage, requestAccessibilityOnInvalid);
             return false;
         }
 
@@ -121,7 +125,7 @@ class RegistrationEditTextView implements IRegistrationFieldView {
                 errorMessage = getView().getResources().getString(R.string.error_min_length,
                         mField.getLabel(), mField.getRestriction().getMinLength());
             }
-            handleError(errorMessage);
+            handleError(errorMessage, requestAccessibilityOnInvalid);
             return false;
         }
         if (mField.getRestriction().getMaxLength() > 0
@@ -131,7 +135,7 @@ class RegistrationEditTextView implements IRegistrationFieldView {
                 errorMessage = getView().getResources().getString(R.string.error_max_length,
                         mField.getLabel(), mField.getRestriction().getMaxLength());
             }
-            handleError(errorMessage);
+            handleError(errorMessage, requestAccessibilityOnInvalid);
             return false;
         }
 
