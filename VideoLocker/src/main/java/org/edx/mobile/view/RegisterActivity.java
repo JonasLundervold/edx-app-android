@@ -181,11 +181,6 @@ public class RegisterActivity extends BaseFragmentActivity
                     });
                     agreementLayout.addView(agreementView.getView());
                 }
-
-                // request rendering of the layouts
-                requiredFieldsLayout.requestLayout();
-                optionalFieldsLayout.requestLayout();
-                agreementLayout.requestLayout();
             }
 
             @Override

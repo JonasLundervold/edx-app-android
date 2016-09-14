@@ -40,6 +40,7 @@ public interface IRegistrationFieldView {
      */
     public static class Factory {
 
+        private static final String HONOR_CODE_CHECKBOX_ID = "honor_code";
         private static final Logger logger = new Logger(IRegistrationFieldView.Factory.class);
 
         public static IRegistrationFieldView getInstance(LayoutInflater inflater, RegistrationFormField field) {
@@ -54,7 +55,7 @@ public interface IRegistrationFieldView {
                 return new RegistrationPasswordView(field, view);
             }
             else if (fieldType.equals(RegistrationFieldType.TEXT)) {
-                View view = inflater.inflate(R.layout.view_register_edit_text, null);
+                View view = inflater.inflate( R.layout.view_register_edit_text, null);
                 return new RegistrationTextView(field, view);
             }
             else if (fieldType.equals(RegistrationFieldType.TEXTAREA)) {
@@ -66,8 +67,14 @@ public interface IRegistrationFieldView {
                 return new RegistrationSelectView(field, view);
             }
             else if (fieldType.equals(RegistrationFieldType.CHECKBOX)) {
-                View view = inflater.inflate(R.layout.view_register_agreement, null);
-                return new RegistrationAgreementView(field, view);
+                if (HONOR_CODE_CHECKBOX_ID.equals(field.getName())) {
+                    View view = inflater.inflate(R.layout.view_register_agreement, null);
+                    return new RegistrationAgreementView(field, view);
+                }
+                else {
+                    View view = inflater.inflate(R.layout.view_register_checkbox, null);
+                    return new RegistrationCheckBoxView(field, view);
+                }
             }
             else {
                 logger.warn(String.format("unknown field type %s found in RegistrationDescription, skipping it",
